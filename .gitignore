@@ -1,0 +1,12 @@
+clean.sh
+*.pem
+*.swp
+*.tmp
+*.DS_Store
+*.pyc
+dist
+build
+pycache
+__pycache__
+.ipynb_checkpoints
+vertices.egg-info
