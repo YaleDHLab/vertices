@@ -78,7 +78,9 @@ class ImgParser:
 class ObjParser:
   def __init__(self, *args, **kwargs):
     self.obj_file_path = args[0]
-    self.scene = pywavefront.Wavefront(self.obj_file_path, collect_faces=True,)
+    self.scene = pywavefront.Wavefront(self.obj_file_path,
+      collect_faces=True,
+      create_materials=True)
     self.vertices = np.array(self.scene.vertices) # array of vertex coords
     self.faces = np.array(self.scene.mesh_list[0].faces) # indices into vertices
     # store references to the original vert and face elements in this mesh
