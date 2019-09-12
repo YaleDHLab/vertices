@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup (
   name='vertices',
-  version='0.0.3',
+  version='0.0.4',
   packages=['vertices'],
   keywords = ['geometry', '2d', '3d', 'mesh', 'obj', 'wavefront', 'd3', 'webgl'],
   description='Convert an obj with n vertices into one with p vertices',
@@ -12,7 +12,7 @@ setup (
   license='MIT',
   install_requires=[
     'matplotlib>=2.0.0',
-    'numpy>=1.16.4',
+    'numpy>=1.15.1',
     'PyWavefront>=1.0.5',
     'scikit-image>=0.15.0',
     'scikit-learn>=0.21.3',
