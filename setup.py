@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup (
   name='vertices',
-  version='0.0.4',
+  version='0.0.5',
   packages=['vertices'],
   keywords = ['geometry', '2d', '3d', 'mesh', 'obj', 'wavefront', 'd3', 'webgl'],
   description='Convert an obj with n vertices into one with p vertices',

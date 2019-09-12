@@ -18,7 +18,9 @@ class ImgParser:
     self.input_vertices = copy.deepcopy(self.vertices)
 
   def get_vertices(self, img):
-    '''Return the vertices from in image using Floyd-Steinberg dithering'''
+    '''
+    Return the vertices from in image using Floyd-Steinberg dithering
+    '''
     img = copy.deepcopy(img)
     img = img.T # col-major order
     w, h = img.shape
@@ -42,14 +44,18 @@ class ImgParser:
     return self.vertices
 
   def get_n_vertices(self, n):
-    '''Return a selection of `n` vertices from self.vertices'''
+    '''
+    Return a selection of `n` vertices from self.vertices
+    '''
     y, x = self.get_resized_shape(n)
     resized = (resize(self.input_img, (y, x)) * 255).astype(int)
     replace = self.vertices.shape[0]<n
     return self.vertices[np.random.choice(len(self.vertices), size=n, replace=replace)]
 
   def get_resized_shape(self, n_verts):
-    '''Return the size to reshape the input image to get n_verts'''
+    '''
+    Return the size to reshape the input image to get n_verts
+    '''
     # determine the proportion of pixels that are inked in the input image
     px_percent = self.input_vertices.shape[0] / self.input_img.size
     # determine the size the input image must be so p percent shading == n verts
@@ -63,7 +69,9 @@ class ImgParser:
     return y, x # size of each dimension
 
   def plot(self, *args, s=0.01, figscale=0.1):
-    '''Plot self.vertces; s sets point size; figscale sets figsize'''
+    '''
+    Plot self.vertces; s sets point size; figscale sets figsize
+    '''
     if len(args):
       vertices = args[0]
     else:
@@ -88,7 +96,9 @@ class ObjParser:
     self.input_faces = copy.deepcopy(self.faces)
 
   def plot(self, *args, s=0.5):
-    '''Plot self.vertices'''
+    '''
+    Plot self.vertices
+    '''
     if len(args):
       vertices = args[0]
     else:
@@ -101,11 +111,19 @@ class ObjParser:
     plt.show()
 
   def midpoint(self, p0, p1):
-    '''Return the midpoint between two points'''
+    '''
+    Return the midpoint between two points
+    '''
     return (p0 + p1) / 2
 
-  def get_n_vertices(self, n):
-    '''Given an obj file and a target number `n`, return the obj file represented with `n` vertices'''
+  def get_n_vertices(self, n, sample_method='kmeans'):
+    '''
+    Given an obj file and a target number `n`,
+    return the obj file represented with `n` vertices
+
+    Valid sample_method args are 'random', 'kmeans'. Random is faster but
+    will produce shapes that retain less of the form of inputs.
+    '''
     # trivial case
     vertices = copy.deepcopy(self.vertices)
     faces = copy.deepcopy(self.faces)
@@ -140,8 +158,14 @@ class ObjParser:
         faces = np.vstack([faces[1:], f1, f2])
     # remove vertices
     elif vertices.shape[0] > n:
-      print(' * removing vertices')
-      clf = KMeans(n_clusters=n)
-      clf.fit_transform(vertices)
-      vertices = clf.cluster_centers_
+      if sample_method == 'random':
+        np.random.shuffle(vertices)
+        vertices = vertices[:n]
+      elif sample_method == 'kmeans':
+        print(' * removing vertices')
+        clf = KMeans(n_clusters=n)
+        clf.fit_transform(vertices)
+        vertices = clf.cluster_centers_
+      else:
+        raise Exception(' ! Requested sample method is invalid')
     return vertices
