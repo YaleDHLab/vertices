@@ -16,6 +16,6 @@ setup (
     'PyWavefront>=1.0.5',
     'scikit-image>=0.15.0',
     'scikit-learn>=0.21.3',
-    'scipy==1.1.0',
+    'scipy==1.10.0',
   ],
 )
